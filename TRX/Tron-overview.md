@@ -477,9 +477,9 @@ See also: https://github.com/tronprotocol/Documentation/blob/master/English_Docu
 # 6. User address generation
 ## 6.1 Algorithm description
 1. First generate a key pair and extract the public key (a 64-byte byte array representing its x,y coordinates). 
-2. Hash the public key using sha3-256 function and extract the last 20 bytes of the result. 
+2. Hash the public key using sha3-256 (KECCAK-256) function and extract the last 20 bytes of the result. 
 3. Add `41` to the beginning of the byte array. Length of the initial address should be 21 bytes. 
-4. Hash the address twice using sha256 function and take the first 4 bytes as verification code. 
+4. Hash the address twice using sha2-256 function and take the first 4 bytes as verification code. 
 5. Add the verification code to the end of the initial address and get an address in base58check format through base58 encoding. 
 6. An encoded mainnet address begins with T and is 34 bytes in length.
 ```
