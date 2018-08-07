@@ -1,12 +1,12 @@
 # 搭建自己的Dapp开发环境
 Version 0.1
 
-## 介绍
+## 1 介绍
 我们目前可以基于波场的私有链搭建智能合约开发环境，不消耗公链上的资源，可以节约开发成本。波场对以太坊虚拟机具有较高的兼容性，大部分基于Solidity的智能合约都可以直接运行在波场上。基于波场的智能合约，可以提供高的TPS，以及针对大多数场景下的免费使用权限，对整个智能合约开发生态具有重要的意义。目前底层虚拟机部分已经基本开发完毕，围绕虚拟机的周边生态正在逐步建立中，包括各种开发工具等。本文介绍一种比较初级的开发方式来部署合约，以及与合约交互。
 
-## 前提条件
+## 2 前提条件
 
-### 合约运行的网络
+### 2.1 合约运行的网络
 
 由于在波场网络协议中，部署和调用合约都需要消耗相应的资源(内存，CPU，存储等)，所以建议开发者在搭建自己的私有网络进行智能合约的调试和测试，在确认合约可用之后，再将合约部署在测试网或主网之上。搭建私有网络可参考[Deployment of FullNode(PrivateNet: Just one witness node) on the one host.](https://github.com/tronprotocol/TronDeployment)
 
@@ -14,11 +14,11 @@ Version 0.1
 
 Witness私钥：da146374a75310b9666e834ee4ad0866d6f4035967bfc76217c5a495fff9f0d0
 
-### 钱包客户端
+### 2.2 钱包客户端
 
 wallet-cli是波场网络的命令行钱包，开发者可以使用wallet-cli在主网上进行合约的部署和发布，以及其他相关的操作。
 
-## 智能合约的开发
+## 3 智能合约的开发
 编写智能合约，我们暂时推荐使用[Remix](http://remix.ethereum.org/)进行编译、调试等前期的开发工作。
 当合约开发完成之后，可以把合约复制到[SimpleWebCompiler](https://github.com/tronprotocol/tron-demo/tree/master/SmartContractTools/SimpleWebCompiler)中进行编译，获取ABI和ByteCode。
 我们提供一个简单的数据存取的合约代码示例，以这个示例来说明编译、部署、调用的步骤。
@@ -38,17 +38,17 @@ contract DataStore {
 }
 ```
 
-### 1、启动私有链
+### 3.1 启动私有链
 确保前提条件中，私有链已经在本地部署完成。可以检查FullNode/logs/tron.log中，是否有持续产块的log信息出现：“Produce block successfully”
 
-### 2、开发智能合约
+### 3.2 开发智能合约
 把上述代码复制到remix中编译，调试，确保代码的逻辑是自己需要的，编译通过，没有错误
 
-### 3、在SimpleWebCompiler编译得到ABI和ByteCode
+### 3.3 在SimpleWebCompiler编译得到ABI和ByteCode
 因为波场的编译器与以太坊的编译略有差异，正在与Remix集成中，所以临时采用改方案获取ABI和ByteCode，而不是通过Remix直接获取ABI和ByteCode。  
 把上述代码复制到SimpleWebCompiler中，点击Compile按钮，获取ABI和ByteCode。
 
-### 4、通过Wallet-cli部署智能合约
+### 3.4 通过Wallet-cli部署智能合约
 下载Wallet-Cli，文件然后编译。
 ```shell
 # 下载源代码
@@ -79,15 +79,16 @@ getbalance
 
 ``` Shell
 # 合约部署指令
-deploycontract <contract_name> <ABI> <code><max_cpu_usage>  <max_net_usage>  <max_storage_useage> <value>
+deploycontract <contract_name> <ABI> <bytecode> <fee_limit> <consume_user_resource_percent> <value> <library:address,library:address,...>
 
 # 参数说明
-ABI:从SimpleWebCompiler中获取到的 ABI json数据
-code:二进制代码
-max_cpu_usage:cpu资源可用量
-max_net_usage:网络资源可用量
-max_storage_useage:storage 资源可用量
+contract_name:自己制定的合约名
+ABI:从SimpleWebCompiler中获取到的 ABI json 数据
+bytecode:从SimpleWebCompiler中获取到的二进制代码
+fee_limit:本次部署合约消耗的TRX的上限，单位是SUN(1 SUN = 10^-6 TRX)，包括CPU资源、STORAGE资源和可用余额的消耗
+consume_user_resource_percent:指定的使用该合约用户的资源占比，是[0, 100]之间的整数。如果是0，则表示用户不会消耗资源。如果开发者资源消耗完了，才会完全使用用户的资源。
 value:在部署合约时，给该合约转账金额，使用十六进制32位表示
+library:address,library:address,...:如果合约包含library，则需要在部署合约的时候指定library的地址，具体见
 
 # 运行例子
 deploycontract DataStore [{"constant":false,"inputs":[{"name":"key","type":"uint256"},{"name":"value","type":"uint256"}],"name":"set","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"key","type":"uint256"}],"name":"get","outputs":[{"name":"value","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}] 608060405234801561001057600080fd5b5060de8061001f6000396000f30060806040526004361060485763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416631ab06ee58114604d5780639507d39a146067575b600080fd5b348015605857600080fd5b506065600435602435608e565b005b348015607257600080fd5b50607c60043560a0565b60408051918252519081900360200190f35b60009182526020829052604090912055565b600090815260208190526040902054905600a165627a7a72305820fdfe832221d60dd582b4526afa20518b98c2e1cb0054653053a844cf265b25040029 1000000 1000000 10000000 0000000000000000000000000000000000000000000000000000000000000000
