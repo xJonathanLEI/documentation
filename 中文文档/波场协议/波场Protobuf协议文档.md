@@ -185,7 +185,7 @@
      int64 remain_num = 2;
      }
            
-+	交易合约有多种类型，包括账户创建合约、账户更新合约、转账合约、转账断言合约、资产投票合约、见证节点投票合约、见证节点创建合约、见证节点更新合约、资产发布合约、参与资产发布和与部署合约11种类型。
++	交易合约有多种类型，包括账户创建合约、账户更新合约、转账合约、转账断言合约、资产投票合约、见证节点投票合约、见证节点创建合约、见证节点更新合约、资产发布合约、参与资产发布和与部署合约等。
 
    `AccountCreatContract`包含3种参数：  
    `type`：账户类型——比如：_0_ 代表的账户类型是`Normal`。  
@@ -344,30 +344,37 @@
       bytes script = 2; 
      }
      
-   `FreezeBalanceContract`包含2种参数：  
+   `FreezeBalanceContract`包含4种参数：  
        `owner_address`：合约持有人地址——比如：_“0xu82h…7237”_。
        `frozen_balance`：冻结余额。
        `frozen_duration`：冻结时间，只允许3天。
+       `resource`：冻结获取的资源类型，0为bandwidth，1为CPU。
        
     message FreezeBalanceContract {
       bytes owner_address = 1;
       int64 frozen_balance = 2;
       int64 frozen_duration = 3;
+      
+      ResourceCode resource = 10
     }
     
    `UnfreezeBalanceContract`包含2种参数：  
        `owner_address`：合约持有人地址——比如：_“0xu82h…7237”_。
+       `resource`：资源类型;
+    
     message UnfreezeBalanceContract {
       bytes owner_address = 1;
+      ResourceCode resource = 10;
     }
     
-   `UnfreezeAssetContract`包含2种参数：  
+   `UnfreezeAssetContract`包含1种参数：  
        `owner_address`：合约持有人地址——比如：_“0xu82h…7237”_。
+       
     message UnfreezeAssetContract {
       bytes owner_address = 1;
     }
     
-   `WithdrawBalanceContract`包含2种参数：  
+   `WithdrawBalanceContract`包含1种参数：  
        `owner_address`：合约持有人地址——比如：_“0xu82h…7237”_。
     message WithdrawBalanceContract {
       bytes owner_address = 1;
@@ -414,6 +421,15 @@
       message BuyStorageContract {
         bytes owner_address = 1;
         int64 quant = 2;
+      }
+      
+   `BuyStorageBytesContract`包含2种参数：
+        `owner_address`：合约持有人地址——比如：_“0xu82h…7237”_。
+        `bytes`：要购买的字节数量(单位byte)   
+      
+      message BuyStorageBytesContract {
+        bytes owner_address = 1;
+        int64 bytes = 2; // storage bytes for buy
       }
       
    `SellStorageContract`包含2种参数：

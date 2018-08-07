@@ -347,7 +347,7 @@ rpc FreezeBalance (FreezeBalanceContract) returns (Transaction) {};
 25.2 提供节点                                                                                                                                                           
 fullnode。                                                                                  
 25.3 参数说明                                                                                                                                                
-FreezeBalanceContract：包含地址、锁定资金、锁定时间。目前锁定时间只能是3天。                                                                                  
+FreezeBalanceContract：包含地址、锁定资金、锁定时间、资源类型。目前锁定时间只能是3天。                                                                                  
 25.4 返回值                                                                                                                                          
 Transaction：返回包含资金的交易，钱包签名后再请求广播交易。                                                                                   
 25.5 功能说明                                                                                                                                            
@@ -362,7 +362,7 @@ rpc UnfreezeBalance (UnfreezeBalanceContract) returns (Transaction) {};
 26.2 提供节点                                                                                    
 fullnode。                                                                                    
 26.3 参数说明                                                                                   
-UnfreezeBalanceContract：包含地址。                                                                                  
+UnfreezeBalanceContract：包含地址、资源类型。                                                                                  
 26.4 返回值                                                                                   
 Transaction：返回交易，钱包签名后再请求广播交易。                                                                                   
 26.5 功能说明                                                                                    
@@ -497,3 +497,124 @@ EmptyMessage：空
 AddressPrKeyPairMessage：生成地址，生成私钥  
 37.5 功能说明                                                                                  
 可用于生成地址和私钥，请务必仅在受信断网节点调用，以免私钥外泄
+
+## 38. 设置账户ID
+38.1 接口说明                                                                                  
+rpc SetAccountId (SetAccountIdContract) returns (Transaction) {};  
+38.2 提供节点                                                                                  
+fullnode  
+38.3 参数说明                                                                                  
+message SetAccountIdContract {
+  bytes account_id = 1;  // 新的账户ID
+  bytes owner_address = 2; // 账户地址
+}  
+38.4 返回值                                                                                  
+Transaction：返回交易，钱包签名后再请求广播交易。 
+38.5 功能说明                                                                                  
+用于设置账户ID。账户ID是唯一的，且大小写不敏感
+
+## 39. 设置账户ID
+39.1 接口说明                                                                                  
+rpc ProposalCreate (ProposalCreateContract) returns (Transaction) {};  
+39.2 提供节点                                                                                  
+fullnode  
+39.3 参数说明                                                                                  
+message ProposalCreateContract {
+  bytes owner_address = 1; // 账户地址
+  map<int64, int64> parameters = 2; // 要修改的参数
+}
+39.4 返回值                                                                                  
+Transaction：返回交易，钱包签名后再请求广播交易。 
+39.5 功能说明                                                                                  
+用于超级代表创建提议
+
+## 40. 创建提议
+40.1 接口说明                                                                                  
+rpc ProposalCreate (ProposalCreateContract) returns (Transaction) {};  
+40.2 提供节点                                                                                  
+fullnode  
+40.3 参数说明                                                                                  
+message ProposalCreateContract {
+  bytes owner_address = 1; // 账户地址
+  map<int64, int64> parameters = 2; // 要修改的参数
+}
+40.4 返回值                                                                                  
+Transaction：返回交易，钱包签名后再请求广播交易。 
+40.5 功能说明                                                                                  
+用于超级代表创建提议，以修改TRON网络参数
+
+## 41. 支持/取消支持提议
+41.1 接口说明                                                                                  
+rpc ProposalApprove (ProposalApproveContract) returns (Transaction) {};  
+41.2 提供节点                                                                                  
+fullnode  
+41.3 参数说明                                                                                  
+message ProposalApproveContract {
+  bytes owner_address = 1; // 账户地址
+  int64 proposal_id = 2; // 提议ID
+  bool is_add_approval = 3; // 是支持还是取消支持
+}
+41.4 返回值                                                                                  
+Transaction：返回交易，钱包签名后再请求广播交易。 
+41.5 功能说明                                                                                  
+用于超级代表投票支持或取消支持提议
+
+## 42. 删除提议
+42.1 接口说明                                                                                  
+rpc ProposalDelete (ProposalDeleteContract) returns (Transaction) {};  
+42.2 提供节点                                                                                  
+fullnode  
+42.3 参数说明                                                                                  
+message ProposalDeleteContract {
+  bytes owner_address = 1; // 提议创建者的ID
+  int64 proposal_id = 2; // 要删除的提议ID
+}
+42.4 返回值                                                                                  
+Transaction：返回交易，钱包签名后再请求广播交易。 
+42.5 功能说明                                                                                  
+用于超级代表取消提议，注意只能是提议创建者才能删除该提议
+
+## 43. 购买存储资源（按照TRX数量）
+43.1 接口说明                                                                                  
+rpc BuyStorage (BuyStorageContract) returns (Transaction) {};  
+43.2 提供节点                                                                                  
+fullnode  
+43.3 参数说明                                                                                  
+message BuyStorageContract {
+  bytes owner_address = 1; // 购买者的账户地址
+  int64 quant = 2; // TRX数量
+}
+43.4 返回值                                                                                  
+Transaction：返回交易，钱包签名后再请求广播交易。 
+43.5 功能说明                                                                                  
+用于账户按照TRX数量购买存储资源
+
+## 44. 购买存储资源（按照Byte数量）
+44.1 接口说明                                                                                  
+rpc BuyStorageBytes (BuyStorageBytesContract) returns (Transaction) {};  
+44.2 提供节点                                                                                  
+fullnode  
+44.3 参数说明                                                                                  
+message BuyStorageBytesContract {
+  bytes owner_address = 1; // 购买者的账户地址
+  int64 bytes = 2; // 需要购买的字节数量
+}
+44.4 返回值                                                                                  
+Transaction：返回交易，钱包签名后再请求广播交易。 
+44.5 功能说明                                                                                  
+用于账户按照Byte数量购买存储资源
+
+## 45. 删除提议
+45.1 接口说明                                                                                  
+rpc SellStorage (SellStorageContract) returns (Transaction) {};  
+45.2 提供节点                                                                                  
+fullnode  
+45.3 参数说明                                                                                  
+message SellStorageContract {
+  bytes owner_address = 1; // 出售者的账户地址
+  int64 storage_bytes = 2; // 要出售的byte数
+}
+45.4 返回值                                                                                  
+Transaction：返回交易，钱包签名后再请求广播交易。 
+45.5 功能说明                                                                                  
+用于账户出售存储资源
