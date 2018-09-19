@@ -47,7 +47,7 @@
 # 正确的停止节点
 
 新建stop.sh，用kill -15关闭java-tron.jar（或者FullNode.jar、SolidityNode.jar）相关进程。 你需要修改下面的pid=ps -ef |grep java-tron.jar |grep -v grep |awk '{print $2}'来找到正确的进程号。
-
+```
     #!/bin/bash
     while true; do
       pid=`ps -ef |grep java-tron.jar |grep -v grep |awk '{print $2}'`
@@ -60,6 +60,6 @@
         break
       fi
     done
-
+```
 
 
