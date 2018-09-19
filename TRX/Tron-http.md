@@ -381,5 +381,128 @@ Parameters：
   owner_address：address that is trigger the contract, converted to a hex string
 Return Value：TransactionExtention, TransactionExtention contains unsigned Transaction
 
-
 ```
+
+## Capital Injection
+
+`wallet/exchangeinject` 
+**Purpose:** Injects capital into the trading pair, then prevents price fluctuation from affecting the transaction.  
+**Demo:** `curl -X POST  http://127.0.0.1:8090/wallet/exchangeinject -d {"owner_address":"419844f7600e018fd0d710e2145351d607b3316ce9", "exchange_id":1, "token_id":"74726f6e6e616d65", "quant":100}` 
+**Parameter Description:**  
+owner_address: Transaction to the creator's address in hexString format 
+exchange_id: Transaction Pair ID 
+token_id: Token ID; usually is the token name, which needs to be in hexString format. 
+quant: Number of capital injection tokens.
+**Return:** Capital Injection Transaction.
+<p>
+
+## Divest Transaction
+
+`wallet/exchangewithdraw` 
+**Purpose:** Withdrawal of transaction pair, after the divestment 
+**Demo:** `curl -X POST  http://127.0.0.1:8090/wallet/exchangewithdraw -d {"owner_address":"419844f7600e018fd0d710e2145351d607b3316ce9", "exchange_id":1, "token_id":"74726f6e6e616d65", "quant":100}` 
+**Parameter Description:** 
+owner_address: Address of the transaction to the creator, hexString format 
+exchange_id: Transaction Pair ID
+token_id: Token ID; usually is the token name, which needs to be in hexString format.
+quant: Number of tokens divested. 
+**Return:** Divested Transaction
+<p>
+
+## Exchange Transaction
+
+`wallet/exchangetransaction` 
+**Purpose:** Participate in trading vs trading 
+**Demo:** `curl -X POST  http://127.0.0.1:8090/wallet/exchangetransaction -d {"owner_address":"419844f7600e018fd0d710e2145351d607b3316ce9", "exchange_id":1, "token_id":"74726f6e6e616d65", "quant":100,"expected":10}` 
+**Parameter Description:** 
+owner_address: Address of the transaction to the creator, hexString format  
+exchange_id: Transaction pair ID 
+token_id: ID of the sold token, generally the token name, which needs to be in hexString format. 
+quant: Number of tokens sold.
+expected: Number of expected to buy tokens.
+**Return:** Token Transaction 
+<p>
+
+ 
+## Get Exchange by ID 
+
+`wallet/getexchangebyid`  
+**Purpose:** Query Transaction Pairs Based on ID  
+**Demo:** `curl -X POST  http://127.0.0.1:8090/wallet/getexchangebyid -d {"id":1}`  
+**Parameter Description:**  
+ID: Transaction Pair ID  
+**Return:** Transaction Pair
+<p>
+
+
+## List Exchanges
+
+`wallet/listexchanges` 
+**Purpose:** Query all Transaction Pairs 
+**Demo:** `curl -X POST  http://127.0.0.1:8090/wallet/listexchanges` 
+**Parameter Description:** 
+**Return:** All Transaction Pairs 
+<p>
+
+
+## Get Chain Parameters
+
+`wallet/getchainparameters` 
+**Purpose:** Query all Transaction Pairs
+**Demo:** `curl -X POST  http://127.0.0.1:8090/wallet/getchainparameters`  
+**Parameter Description:** 
+**Return:** All parameters the blockchain committee can set
+
+
+`wallet/proposalcreate` 
+Purpose: Create Proposal 
+Demo: curl -X POST  http://127.0.0.1:8090/wallet/proposalcreate -d {"owner_address" : "419844F7600E018FD0D710E2145351D607B3316CE9","parameters":[{"key": 0,"value": 100000},{"key": 1,"value": 2}] } 
+**Parameter Description:** 
+owner_address: Creater Address 
+parameters: Proposal Parameter 
+Return: Create a proposal transaction
+
+
+`wallet/getproposalbyid` 
+Purpose: Query Proposal based on ID 
+Demo: curl -X POST  http://127.0.0.1:8090/wallet/getproposalbyid -d {"id":1} 
+**Parameter Description:** 
+ID: Proposal ID 
+Return: Proposal Details
+
+
+`wallet/listproposals` 
+Purpose: Query all Proposals
+Demo: curl -X POST  http://127.0.0.1:8090/wallet/listproposals 
+Parameters: None 
+Return: Proposal List Information
+
+
+`wallet/proposalapprove` 
+Purpose: Proposal Approval 
+Demo: curl -X POST  http://127.0.0.1:8090/wallet/proposalapprove -d {"owner_address" : "419844F7600E018FD0D710E2145351D607B3316CE9", "proposal_id":1, "is_add_approval":true} 
+Parameters: 
+owner_address: Approver Address 
+proposal_id: Proposal ID 
+is_add_approval：Is it Approved 
+Return: Approval of proposed transaction
+
+
+
+`wallet/proposaldelete`  
+Purpose: Delete Proposal 
+Demo: curl -X POST  http://127.0.0.1:8090/wallet/proposaldelete -d {"owner_address" : "419844F7600E018FD0D710E2145351D607B3316CE9", "proposal_id":1}  
+Parameters:  
+owner_address: Delete the person's address. Only the proposal owner allows the proposal to be deleted.  
+proposal_id: Proposal ID  
+Return: Delete Proposal Transaction 
+
+
+
+`wallet/getaccountresource` 
+Purpose: Query the accounts resource information 
+Demo: curl -X POST  http://127.0.0.1:8090/wallet/getaccountresource -d {"address" : "419844f7600e018fd0d710e2145351d607b3316ce9"} 
+Parameters: 
+address: Query account address 
+Return: Account resource information
+
