@@ -40,6 +40,6 @@
 ![提现流程](https://github.com/tronprotocol/Documentation/blob/feature/add_node_deployment_diagram/TRX_CN/figures/Withdrawal_process.png)
 
 # 8. 钱包使用示例
-https://github.com/tronprotocol/java-tron/releases
+https://github.com/tronprotocol/Documentation/blob/master-exchange-wallet/TRX_CN/%E6%B3%A2%E5%9C%BA%E4%B8%BB%E7%BD%91%E4%B8%8A%E7%BA%BF%E5%90%8E%E7%9A%84%E6%8C%87%E5%AF%BC%E6%96%B9%E6%A1%88/%E4%BA%A4%E6%98%93%E6%89%80%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B.md
 
 
